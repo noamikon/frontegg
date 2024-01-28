@@ -7,8 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { FronteggProvider } from '@frontegg/react';
 
 const contextOptions = {
-  baseUrl: 'https://app-b5tc2m0jc1zn.frontegg.com', // Your Frontegg base URL
-  clientId: '14d8d149-4b8d-47a3-afbd-9329da12390d' // Your Frontegg client ID
+  baseUrl: 'https://app-b5tc2m0jc1zn.frontegg.com',
+  clientId: '14d8d149-4b8d-47a3-afbd-9329da12390d'
 };
 
 const authOptions = {
@@ -24,7 +24,23 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+/*
+//good old version
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+reportWebVitals();
+ */
