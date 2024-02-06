@@ -6,28 +6,35 @@ import {
   AdminPortal,
   useLoginWithRedirect
 } from "@frontegg/react";
-import settingsIcon from './settings.png'; // Path to your settings icon
-import logoutIcon from './logout.png'; // Path to your logout icon
+import { fetchTenantNames } from './fronteggService'; // Import the function
+import settingsIcon from './settings.png';
+import logoutIcon from './logout.png';
 import './App.css';
 
 function App() {
   const { user, isAuthenticated } = useAuth();
   const { switchTenant } = useAuthActions();
-  const [selectedTenant, setSelectedTenant] = useState('');
   const loginWithRedirect = useLoginWithRedirect();
+  const [tenantNames, setTenantNames] = useState({});
+  const [selectedTenant, setSelectedTenant] = useState('');
+
   const handleClick = () => {
     AdminPortal.show();
   };
 
-  // Redirect to login automatically if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
+      fetchTenantNames(user?.tenantIds || [])
+        .then(names => setTenantNames(names))
+        .catch(error => console.error('Failed to fetch tenant names:', error));
+    } else {
       loginWithRedirect();
     }
-  }, [isAuthenticated, loginWithRedirect]);
+  }, [isAuthenticated, user?.tenantIds, loginWithRedirect]);
 
   const handleSwitchTenant = (tenantId) => {
     switchTenant({ tenantId });
+    setSelectedTenant(tenantId);
   };
 
   const logout = () => {
@@ -57,7 +64,7 @@ function App() {
             >
               {user?.tenantIds?.map((tenantId) => (
                 <option key={tenantId} value={tenantId}>
-                  Tenant {tenantId}
+                  {tenantNames[tenantId] || `Tenant ${tenantId}`}
                 </option>
               ))}
             </select>
